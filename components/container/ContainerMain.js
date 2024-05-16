@@ -16,6 +16,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 const ContainerMain = () => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("dd/MM/yyyy");
+  const [weights, setWeights] = useState([]);
   const [weight, setWeight] = useState("");
   const [totalWeight, setTotalWeight] = useState(0);
   const pricePerKg = 10;
@@ -36,9 +37,19 @@ const ContainerMain = () => {
     setDatePickerVisibility(false);
   };
 
-  const handleCalculate = () => {
-    // Tính toán và cập nhật tổng trọng lượng
+  const handelSave = () => {
+    if (weight) {
+      const newWeights = [...weights];
+      newWeights.push(parseFloat(weight));
+      setWeights(newWeights);
+      // console.log(newWeights)
+      setWeight("");
+    }
   };
+  useEffect(() => {
+    const sum = weights.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    setTotalWeight(sum);
+  }, [weights]);
 
   // xử lý đăng xuất
   const handleLogout = useCallback(() => {
@@ -95,7 +106,8 @@ const ContainerMain = () => {
         />
 
         {/* Tính toán tống số tiền đã làm được */}
-        <Button title="Calculate" onPress={handleCalculate} />
+        <Button title="Lưu" onPress={handelSave} />
+
         <Text style={styles.label}>Tổng khối lượng: {totalWeight} kg</Text>
         <Text style={styles.label}>
           Tổng tiền: {totalWeight * pricePerKg} VND
@@ -117,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fbfbe1",
-    height: 70,
+    height: 80,
     zIndex: 1,
   },
   subContainer: {

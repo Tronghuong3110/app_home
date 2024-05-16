@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
     width: 40,
-    height: 50
+    height: 60
   },
   menuToggleText: {
     fontSize: 18,
